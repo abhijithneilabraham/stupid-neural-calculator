@@ -3,6 +3,7 @@ from tensorflow.keras.models import Sequential
 from tensorflow.keras.layers import Dense
 from sklearn.model_selection import train_test_split
 from sklearn.preprocessing import MinMaxScaler
+from sklearn.externals import joblib 
 dataset=[[1,1,2],[1,2,3],[3,5,8],[9,4,13],[5,7,12],[150,200,350],[100,200,300]]
 dataset=np.asarray(list(map(np.asarray,dataset)))
 x=dataset[:,:-1]
@@ -23,10 +24,6 @@ model.add(Dense(1, kernel_initializer='normal'))
 # Compile model
 model.compile(loss='mean_squared_error', optimizer='adam')
 model.fit(xscale, yscale, epochs=10, batch_size=10,validation_split=0.2)
-pred_data=[[1,1]]
-pred_data=np.asarray(list(map(np.asarray,pred_data)))
-# print(pred_data,dataset)
-# print(x,y)
-pred=model.predict(pred_data)
-ynew = scaler_y.inverse_transform(pred)
-print("predicted=",ynew[0][0])
+model.save('addition.h5')
+joblib.dump(scaler_y, 'transform.pkl') 
+
